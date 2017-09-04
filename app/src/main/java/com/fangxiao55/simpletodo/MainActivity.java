@@ -1,5 +1,6 @@
 package com.fangxiao55.simpletodo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
         etNewItem.setText("");
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == 1 && requestCode == 0) {
+            items.set(data.getIntExtra("Index", 0), data.getStringExtra("NewValue"));
+            writeItems();
+        }
+    }
+
     private void setupListViewListener() {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -48,6 +57,16 @@ public class MainActivity extends AppCompatActivity {
                 itemsAdapter.notifyDataSetChanged();
                 writeItems();
                 return true;
+            }
+        });
+
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
+                intent.putExtra("OldValue", items.get(i));
+                intent.putExtra("Index", i);
+                startActivityForResult(intent, 0);
             }
         });
     }
