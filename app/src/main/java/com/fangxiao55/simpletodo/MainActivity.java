@@ -29,12 +29,10 @@ public class MainActivity extends AppCompatActivity {
         readItems();
         itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
-        items.add("First item");
-        items.add("Second item");
         setupListViewListener();
     }
 
-    public void onAddItem() {
+    public void onAddItem(View view) {
         EditText etNewItem = findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
         itemsAdapter.add(itemText);
@@ -45,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == 1 && requestCode == 0) {
             items.set(data.getIntExtra("Index", 0), data.getStringExtra("NewValue"));
+            itemsAdapter.notifyDataSetChanged();
             writeItems();
         }
     }

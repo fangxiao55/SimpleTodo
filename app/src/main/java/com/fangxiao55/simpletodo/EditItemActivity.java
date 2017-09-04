@@ -23,6 +23,7 @@ public class EditItemActivity extends AppCompatActivity {
                 Intent data = getIntent();
                 data.putExtra("NewValue", mtEditItem.getText().toString());
                 setResult(1, data);
+                EditItemActivity.this.finish();
             }
         });
     }
